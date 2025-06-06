@@ -1,3 +1,7 @@
 .idea
 .env
 __pychace__
+node_modules
+.next
+venv
+.venv

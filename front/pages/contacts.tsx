@@ -1,4 +1,5 @@
 import MainLayout from "../components/layouts/MainLayout";
+import ContactDetails from "../components/ContactDetails";
 
 export default function ContactsPage() {
   return (
@@ -12,24 +13,17 @@ export default function ContactsPage() {
         <p className="mb-2">
           Если у вас есть вопросы, предложения или хотите сотрудничать, свяжитесь с нами любым удобным способом:
         </p>
-        <ul className="list-disc pl-5 space-y-2">
-          <li>
-            Email: <a href="mailto:info@example.com" className="text-blue-500 underline">info@example.com</a>
-          </li>
-          <li>
-            Телефон: <a href="tel:+79991234567" className="text-blue-500 underline">+7 (999) 123-45-67</a>
-          </li>
-          <li>Адрес: г. Москва, ул. Примерная, д. 12, офис 34</li>
-        </ul>
+
+        <ContactDetails />
       </section>
+
       <section>
         <h2 className="text-2xl font-semibold mb-4">Мы на карте</h2>
-        <div className="w-full h-64">
+        <div className="relative w-full pt-[56.25%]">
           <iframe
+            className="absolute top-0 left-0 w-full h-full"
             title="Карта расположения офиса"
             src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexample&source=constructor"
-            width="100%"
-            height="100%"
             frameBorder="0"
             allowFullScreen
           ></iframe>

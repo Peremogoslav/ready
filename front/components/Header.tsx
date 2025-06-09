@@ -1,13 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import styles from "../styles/Header.module.css";
 import { FaTelegramPlane, FaWhatsapp } from "react-icons/fa";
 
+type Contact = {
+  global_telegram: string | null;
+  global_whatsapp: string | null;
+  global_number: string | null;
+};
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [contact, setContact] = useState<Contact | null>(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    async function fetchContacts() {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manager/all`);
+        const data = await res.json();
+        setContact(data[0]);
+      } catch (error) {
+        console.error("Ошибка загрузки контактов:", error);
+      }
+    }
+
+    fetchContacts();
+  }, []);
+
+  // Формируем ссылки с проверками
+  const telegramLink = contact?.global_telegram
+    ? `https://t.me/${contact.global_telegram}`
+    : "#";
+
+  const whatsappLink = contact?.global_whatsapp
+    ? `https://wa.me/${contact.global_whatsapp.replace(/[^\d]/g, "")}`
+    : "#";
 
   return (
     <header className={styles.header}>
@@ -43,9 +73,6 @@ export function Header() {
         </div>
 
         <div className={styles.navGroup}>
-          <Link href="/escort-blog" className={styles.link} onClick={closeMenu}>
-            Эскорт Блог
-          </Link>
           <Link href="/escort-rabota" className={styles.link} onClick={closeMenu}>
             Эскорт Работа
           </Link>
@@ -61,7 +88,7 @@ export function Header() {
       {/* Десктопные иконки */}
       <div className={styles.right}>
         <a
-          href="https://t.me/..."
+          href={telegramLink}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Telegram"
@@ -69,7 +96,7 @@ export function Header() {
           <FaTelegramPlane className={styles.icon} />
         </a>
         <a
-          href="https://wa.me/..."
+          href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="WhatsApp"
@@ -78,10 +105,9 @@ export function Header() {
         </a>
       </div>
 
-      {/* Мобильные иконки — показываем только на мобиле */}
       <div className={styles.mobileIcons}>
         <a
-          href="https://t.me/..."
+          href={telegramLink}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Telegram"
@@ -89,7 +115,7 @@ export function Header() {
           <FaTelegramPlane className={styles.icon} />
         </a>
         <a
-          href="https://wa.me/..."
+          href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="WhatsApp"

@@ -34,11 +34,6 @@ function generateDescription(model: Model): string {
   return desc;
 }
 
-function formatPrice(price?: string): string {
-  if (!price) return "";
-  return price.includes("₽") ? price : `${price} ₽`;
-}
-
 function generateTitle(model: Model): string {
   const parts = [];
 
@@ -78,10 +73,11 @@ export default function ModelPage({ model, otherModels }: ModelPageProps) {
   if (router.isFallback) return <div className={styles.container}>Loading...</div>;
   if (!model) return <div className={styles.container}>Model not found</div>;
 
-  const formatPrice = (price?: string) => {
-    if (!price) return "по запросу";
-    return price.includes('₽') ? price : `${price} ₽`;
-  };
+    const formatPrice = (price?: number | null) => {
+      if (price === null || price === undefined) return "по запросу";
+      const priceStr = price.toString();
+      return priceStr.includes('₽') ? priceStr : `${priceStr} ₽`;
+    };
 
   return (
     <>

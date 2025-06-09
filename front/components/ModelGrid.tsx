@@ -18,8 +18,8 @@ type Model = {
   name: string;
   slug: string;
   photos: Photo[];
-  price_per_hour?: string;
-  boobs?: string;
+  price_per_hour?: number;
+  boobs?: number;
   place?: string;
   description?: string;
 };

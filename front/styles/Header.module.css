@@ -12,7 +12,24 @@
   background-color: rgba(255, 255, 255, 0.85);
 }
 
+@keyframes flyIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.logo {
+  font-weight: 700;
+  font-size: 16px;
+  color: #222;
+  text-decoration: none;
+  animation: flyIn 0.5s ease forwards;
+}
 .left {
   display: flex;
   align-items: center;
@@ -73,7 +90,6 @@
   color: #e91e63;
 }
 
-/* Скрываем мобильные иконки по умолчанию */
 .mobileIcons {
   display: none;
 }
@@ -98,7 +114,24 @@
     z-index: 99;
 
   }
+@keyframes flyIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.logo {
+  font-weight: 700;
+  font-size: 16px;
+  color: #222;
+  text-decoration: none;
+  animation: flyIn 0.5s ease forwards;
+}
   .nav.navOpen {
     display: flex;
 
@@ -116,7 +149,6 @@
     display: none;
   }
 
-  /* Мобильные иконки показываем и позиционируем по центру рядом с бургером */
   .mobileIcons {
     display: flex;
     gap: 20px;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import ModelGrid from "../ModelGrid";
 import styles from "../../styles/Home.module.css";
 import { useServices } from "../../contexts/ServicesContext";
-
+import { Contact } from "../ContactDetails";
 type Photo = {
   photo_url: string;
 };
@@ -18,11 +18,12 @@ type Model = {
   name: string;
   slug: string;
   photos: Photo[];
-  price_per_hour?: string;
-  boobs?: string;
+  price_per_hour?: number;
+  boobs?: number;
   place?: string;
   description?: string;
 };
+
 
 type Props = {
   title: string;
@@ -47,6 +48,22 @@ export default function MainLayout({
   const [isMobile, setIsMobile] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
+  const [contact, setContact] = useState<Contact | null>(null);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manager/all`);
+        const data = await res.json();
+        setContact(data[0]);
+      } catch (err) {
+        console.error("Ошибка загрузки контактов:", err);
+      }
+    };
+
+    fetchContacts();
+  }, []);
+
   useEffect(() => {
     const checkMobile = () => {
       const mobile = window.innerWidth <= 900;
@@ -58,7 +75,6 @@ export default function MainLayout({
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
   return (
     <>
       <Head>
@@ -121,7 +137,7 @@ export default function MainLayout({
             {Array.isArray(models) && models.length > 0 ? (
               <ModelGrid models={models} />
             ) : (
-              children || <p>Нет доступных моделей.</p>
+              children || <p></p>
             )}
           </main>
         </div>
@@ -139,15 +155,51 @@ export default function MainLayout({
         </ul>
       </div>
 
-      <div className={styles.footerColumn}>
-        <h3>Контакты</h3>
-        <p>Email: support@example.com</p>
-        <p>Телефон: +7 (999) 123-45-67</p>
-        <p>Москва, Россия</p>
-      </div>
+<div className={styles.footerColumn}>
+  <h3>Контакты</h3>
+
+  {contact?.global_number && (
+    <p>
+      Телефон:{" "}
+      <a href={`tel:${contact.global_number}`} className="text-blue-500 underline">
+        {contact.global_number}
+      </a>
+    </p>
+  )}
+
+  {contact?.global_telegram && (
+    <p>
+      Telegram:{" "}
+      <a
+        href={`https://t.me/${contact.global_telegram}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 underline"
+      >
+        @{contact.global_telegram}
+      </a>
+    </p>
+  )}
+
+  {contact?.global_whatsapp && (
+    <p>
+      WhatsApp:{" "}
+      <a
+        href={`https://wa.me/${contact.global_whatsapp.replace(/[^\d]/g, "")}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 underline"
+      >
+        Написать
+      </a>
+    </p>
+  )}
+</div>
+
 
       <div className={styles.footerColumn}>
         <h3>Соцсети</h3>
+
         <ul>
           <li><a href="#" target="_blank">Телеграм</a></li>
           <li><a href="#" target="_blank">Ватсап</a></li>

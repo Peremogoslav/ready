@@ -1,26 +1,62 @@
 import { useState } from "react";
 import MainLayout from "../components/layouts/MainLayout";
 
+const TELEGRAM_BOT_TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN!;
+const TELEGRAM_CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID!;
+
+
 export default function JobsPage() {
   const [form, setForm] = useState({
     name: "",
+    phone: "",
     age: "",
     city: "",
-    phone: "",
-    email: "",
-    about: "",
+    telegram: "",
+    instagram: "",
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь можно добавить логику отправки формы, например, через API
-    setSubmitted(true);
+    setError(null);
+
+    const message = `
+Имя: ${form.name}
+Номер: ${form.phone}
+Возраст: ${form.age}
+Город: ${form.city}
+Телеграм: ${form.telegram}
+Инстаграм: ${form.instagram}
+    `;
+
+    try {
+      const res = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: "HTML",
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Ошибка отправки сообщения в Telegram");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError((err as Error).message);
+    }
   };
 
   return (
@@ -46,6 +82,19 @@ export default function JobsPage() {
               required
               className="w-full mt-1 p-2 border rounded"
               placeholder="Введите ваше имя"
+            />
+          </label>
+
+          <label className="block mb-3">
+            Номер
+            <input
+              type="tel"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              required
+              className="w-full mt-1 p-2 border rounded"
+              placeholder="+7 999 999 99 99"
             />
           </label>
 
@@ -78,41 +127,32 @@ export default function JobsPage() {
           </label>
 
           <label className="block mb-3">
-            Телефон
+            Телеграм
             <input
-              type="tel"
-              name="phone"
-              value={form.phone}
+              type="text"
+              name="telegram"
+              value={form.telegram}
               onChange={handleChange}
-              required
               className="w-full mt-1 p-2 border rounded"
-              placeholder="+7 999 999 99 99"
+              placeholder="@yourtelegram"
             />
           </label>
 
           <label className="block mb-3">
-            Email
+            Инстаграм
             <input
-              type="email"
-              name="email"
-              value={form.email}
+              type="text"
+              name="instagram"
+              value={form.instagram}
               onChange={handleChange}
               className="w-full mt-1 p-2 border rounded"
-              placeholder="example@mail.com"
+              placeholder="@yourinstagram"
             />
           </label>
 
-          <label className="block mb-4">
-            Немного о себе
-            <textarea
-              name="about"
-              value={form.about}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border rounded"
-              rows={4}
-              placeholder="Расскажите о себе, своих интересах"
-            />
-          </label>
+          {error && (
+            <p className="text-red-600 mb-3">{error}</p>
+          )}
 
           <button
             type="submit"

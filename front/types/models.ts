@@ -13,10 +13,10 @@ export type Model = {
   name: string;
   slug: string;
   place?: string;
-  price_per_hour?: string;
-  price_per_night?: string;
-  price_per_foo?: string;
-  boobs?: string;
+  price_per_hour?: number;
+  price_per_night?: number;
+  price_per_foo?: number;
+  boobs?: number;
   description?: string;
   number?: string;
   photos: Photo[];

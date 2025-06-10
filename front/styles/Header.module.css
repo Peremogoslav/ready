@@ -3,13 +3,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  transition: box-shadow 0.3s ease;
 }
 
 @keyframes flyIn {
@@ -23,23 +25,16 @@
   }
 }
 
-.logo {
-  font-weight: 700;
-  font-size: 16px;
-  color: #222;
-  text-decoration: none;
-  animation: flyIn 0.5s ease forwards;
-}
 .left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
 }
 
 .logo {
-  font-weight: bold;
-  font-size: 18px;
-  color: #333;
+  font-weight: 900;
+  font-size: 24px;
+  color: #222;
   text-decoration: none;
 }
 
@@ -71,7 +66,7 @@
 }
 
 .icon {
-  font-size: 22px;
+  font-size: 26px;
   color: #333;
   transition: color 0.2s;
 }
@@ -81,6 +76,8 @@
 }
 
 .link {
+  font-weight: 600;
+  font-size: 18px;
   color: #333;
   text-decoration: none;
   transition: color 0.2s;

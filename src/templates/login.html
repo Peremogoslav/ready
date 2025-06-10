@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Вход в админку</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 min-h-screen flex items-center justify-center">
+  <!-- Background decorations -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Login container -->
+  <div class="relative w-full max-w-md">
+    <!-- Login card -->
+    <div class="bg-white rounded-2xl shadow-2xl p-8 backdrop-blur-lg bg-opacity-95">
+      <!-- Logo -->
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-cog text-white text-3xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Админ панель</h1>
+        <p class="text-gray-600">Войдите в систему управления</p>
+      </div>
+
+      <!-- Login form -->
+      <form action="/api/login" method="post" class="space-y-6">
+        <!-- Username field -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+            <i class="fas fa-user mr-2 text-gray-400"></i>
+            Имя пользователя
+          </label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none"
+            placeholder="Введите имя пользователя"
+          >
+        </div>
+
+        <!-- Password field -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+            <i class="fas fa-lock mr-2 text-gray-400"></i>
+            Пароль
+          </label>
+          <div class="relative">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors outline-none pr-12"
+              placeholder="Введите пароль"
+            >
+            <button
+              type="button"
+              onclick="togglePassword()"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <i class="fas fa-eye" id="password-toggle-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember me -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            >
+            <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+              Запомнить меня
+            </label>
+          </div>
+          <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500 transition-colors">
+            Забыли пароль?
+          </a>
+        </div>
+
+        <!-- Login button -->
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105"
+        >
+          <i class="fas fa-sign-in-alt mr-2"></i>
+          Войти
+        </button>
+      </form>
+
+      <!-- Error message -->
+      {% if error %}
+      <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <i class="fas fa-exclamation-circle text-red-400"></i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-red-700">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Footer -->
+      <div class="mt-8 text-center">
+        <p class="text-xs text-gray-500">
+          © 2024 Админ панель. Все права защищены.
+        </p>
+      </div>
+    </div>
+
+    <!-- Security notice -->
+    <div class="mt-6 bg-white bg-opacity-90 rounded-lg p-4 text-center">
+      <div class="flex items-center justify-center text-sm text-gray-600">
+        <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+        Безопасное соединение SSL
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('password-toggle-icon');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+
+    // Focus on username field when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('username').focus();
+    });
+
+    // Add loading state to form submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const button = e.target.querySelector('button[type="submit"]');
+      button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Входим...';
+      button.disabled = true;
+    });
+  </script>
+</body>
+</html>

@@ -43,7 +43,7 @@ export function Header() {
     <header className={styles.header}>
       <div className={styles.left}>
         <Link href="/" className={styles.logo} onClick={closeMenu}>
-          MySite
+          Moscow Dolls
         </Link>
         <button
           className={styles.burger}

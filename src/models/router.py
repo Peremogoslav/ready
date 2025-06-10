@@ -4,6 +4,7 @@ from uuid import UUID, uuid4
 from typing import List, Optional
 from slugify import slugify
 from sqlalchemy.sql.expression import func
+from starlette.responses import RedirectResponse
 from utils.img_upload import upload_image_to_imgbb
 from database import get_db
 from src.models.models import Services, Models, ModelPhoto
@@ -13,16 +14,19 @@ from models.schemas import ModelResponse, ModelCreate
 router = APIRouter(prefix="/api/models", tags=["models"])
 
 
-@router.post("/create", response_model=ModelResponse)
+@router.post("/create")
 async def create_model(
     name: str = Form(...),
     description: str = Form(...),
-    price_per_hour: Optional[str] = Form(None),
-    price_per_foo: Optional[str] = Form(None),
-    price_per_night: Optional[str] = Form(None),
-    height: Optional[str] = Form(None),
-    weight: Optional[str] = Form(None),
-    boobs: Optional[str] = Form(None),
+    age: Optional[int] = Form(...),
+    name_en: str = Form(...),
+    description_en: str = Form(...),
+    price_per_hour: Optional[int] = Form(None),
+    price_per_foo: Optional[int] = Form(None),
+    price_per_night: Optional[int] = Form(None),
+    height: Optional[int] = Form(None),
+    weight: Optional[int] = Form(None),
+    boobs: Optional[int] = Form(None),
     indi: Optional[bool] = Form(False),
     elit: Optional[bool] = Form(False),
     new: Optional[bool] = Form(False),
@@ -38,9 +42,13 @@ async def create_model(
         service_ids_list = [int(i) for i in service_ids.split(",") if i.strip()]
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid service ID format")
+
     new_model = Models(
         uuid=uuid4(),
         name=name,
+        description_en=description_en,
+        age=age,
+        name_en=name_en,
         slug=slug,
         description=description,
         price_per_hour=price_per_hour,
@@ -55,17 +63,24 @@ async def create_model(
         place=place,
         number=number,
     )
+
     if service_ids_list:
         services = db.query(Services).filter(Services.id.in_(service_ids_list)).all()
         new_model.services = services
+
     db.add(new_model)
     db.commit()
     db.refresh(new_model)
 
     photos = []
+
     for file in files:
         file_bytes = await file.read()
-        photo_url = upload_image_to_imgbb(file_bytes)
+        try:
+            photo_url = upload_image_to_imgbb(file_bytes)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
+
         photo = ModelPhoto(model_uuid=new_model.uuid, photo_url=photo_url)
         photos.append(photo)
 
@@ -75,14 +90,29 @@ async def create_model(
         db.commit()
         db.refresh(new_model)
 
-    return new_model
+    return RedirectResponse(url="/admin/models", status_code=303)
 
-
-@router.put("/update-{model_id}", response_model=ModelResponse)
+@router.post("/update/{model_id}", response_model=ModelResponse)
 async def update_model(
     model_id: UUID,
-    model_data: ModelCreate,
-    files: Optional[List[UploadFile]] = File(None),  # новые фото
+    name: Optional[str] = Form(None),
+    description: Optional[str] = Form(None),
+    age: Optional[int] = Form(None),
+    name_en: Optional[str] = Form(None),
+    description_en: Optional[str] = Form(None),
+    price_per_hour: Optional[int] = Form(None),
+    price_per_foo: Optional[int] = Form(None),
+    price_per_night: Optional[int] = Form(None),
+    height: Optional[int] = Form(None),
+    weight: Optional[int] = Form(None),
+    boobs: Optional[int] = Form(None),
+    indi: Optional[bool] = Form(None),
+    elit: Optional[bool] = Form(None),
+    new: Optional[bool] = Form(None),
+    place: Optional[str] = Form(None),
+    number: Optional[str] = Form(None),
+    service_ids: Optional[List[int]] = Form([]),
+    files: Optional[List[UploadFile]] = File(None),
     db: Session = Depends(get_db),
     _: str = Depends(get_current_superuser)
 ):
@@ -90,32 +120,65 @@ async def update_model(
     if not model:
         raise HTTPException(status_code=404, detail="Model not found")
 
-    # Обновление основных полей
-    for attr, value in model_data.dict(exclude={"services"}).items():
-        setattr(model, attr, value)
+    update_data = {
+        "name": name,
+        "description": description,
+        "price_per_hour": price_per_hour,
+        "price_per_foo": price_per_foo,
+        "price_per_night": price_per_night,
+        "height": height,
+        "age": age,
+        "description_en": description_en,
+        "name_en": name_en,
+        "weight": weight,
+        "boobs": boobs,
+        "indi": indi,
+        "elit": elit,
+        "new": new,
+        "place": place,
+        "number": number,
+    }
 
-    # Обновление услуг
-    if model_data.services:
-        services = db.query(Services).filter(Services.id.in_(model_data.services)).all()
-        model.services = services
+    for key, value in update_data.items():
+        if value is not None:
+            setattr(model, key, value)
 
-    # Если пришли новые фото — добавляем
+    if name or place or new is not None or elit is not None or indi is not None:
+        model.slug = slugify(f"{model.name}-{model.place or ''}-{'indi' if model.indi else ''}-{'new' if model.new else ''}-{'elit' if model.elit else ''}")
+
+    if service_ids:
+        try:
+            # Если service_ids уже список, просто приведём элементы к int (если нужно)
+            ids = [int(i) for i in service_ids]
+            services = db.query(Services).filter(Services.id.in_(ids)).all()
+            model.services = services
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid service ID format")
+
     if files:
-        photos = []
+        new_photos = []
         for file in files:
             file_bytes = await file.read()
-            photo_url = upload_image_to_imgbb(file_bytes)
+            if not file_bytes:
+                continue
+            try:
+                photo_url = upload_image_to_imgbb(file_bytes)
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Image upload failed: {str(e)}")
             photo = ModelPhoto(model_uuid=model.uuid, photo_url=photo_url)
-            photos.append(photo)
-        model.photos.extend(photos)
-        db.add_all(photos)
+            new_photos.append(photo)
+        if new_photos:
+            db.add_all(new_photos)
+            model.photos.extend(new_photos)
 
     db.commit()
     db.refresh(model)
-    return model
+    return RedirectResponse(url="/admin/models", status_code=303)
 
 
-@router.delete("/delete-{model_id}")
+
+
+@router.delete("/delete/{model_id}")
 def delete_model(
     model_id: UUID,
     db: Session = Depends(get_db),

@@ -1,0 +1,86 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Главная{% endblock %}
+{% block page_title %}Панель управления{% endblock %}
+
+{% block content %}
+<!-- Welcome banner -->
+<div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl p-6 text-white mb-6">
+  <h3 class="text-2xl font-bold mb-2">
+    Добро пожаловать, {{ user.username if user else 'Администратор' }}!
+  </h3>
+  <p class="text-indigo-100">Управляйте своим контентом с помощью удобной панели администратора</p>
+</div>
+
+<!-- Stats cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Models -->
+  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <div class="flex items-center">
+      <div class="flex-shrink-0">
+        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+          <i class="fas fa-users text-white text-xl"></i>
+        </div>
+      </div>
+      <div class="ml-4">
+        <p class="text-sm font-medium text-gray-600">Всего моделей</p>
+        <p class="text-2xl font-bold text-gray-900">{{ total_models or 0 }}</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Quick Actions Card -->
+  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4">
+      <i class="fas fa-bolt text-indigo-600 mr-2"></i>
+      Быстрые действия
+    </h4>
+    <div class="space-y-3">
+      <a href="/admin/models/create" class="flex items-center p-3 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors group">
+        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+          <i class="fas fa-plus text-white"></i>
+        </div>
+        <div class="ml-3">
+          <p class="font-medium text-gray-900 group-hover:text-indigo-600">Добавить модель</p>
+          <p class="text-sm text-gray-500">Создать новую модель</p>
+        </div>
+      </a>
+
+      <a href="/admin/models" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group">
+        <div class="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center">
+          <i class="fas fa-list text-white"></i>
+        </div>
+        <div class="ml-3">
+          <p class="font-medium text-gray-900 group-hover:text-gray-600">Управление моделями</p>
+          <p class="text-sm text-gray-500">Просмотр и редактирование</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <h4 class="text-lg font-semibold text-gray-900 mb-4">
+      <i class="fas fa-clock text-green-600 mr-2"></i>
+      Последняя активность
+    </h4>
+    <div class="space-y-3">
+      <div class="flex items-center p-3 bg-green-50 rounded-lg">
+        <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">Система запущена</p>
+          <p class="text-xs text-gray-500">Панель администратора готова к работе</p>
+        </div>
+        <span class="text-xs text-gray-400">сейчас</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

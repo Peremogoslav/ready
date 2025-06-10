@@ -1,0 +1,375 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Редактировать модель{% endblock %}
+{% block page_title %}Редактирование модели: {{ model.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+  <!-- Back button -->
+  <div class="mb-6">
+    <a href="/admin/models" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors">
+      <i class="fas fa-arrow-left mr-2"></i>
+      Назад к списку моделей
+    </a>
+  </div>
+
+  <form action="/api/models/update/{{ model.uuid }}" method="post" enctype="multipart/form-data" class="space-y-8">
+    <!-- Basic Information -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-user mr-2 text-indigo-600"></i>
+          Основная информация
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Базовые данные о модели</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Имя <span class="text-red-500">*</span>
+          </label>
+          <input type="text" name="name" value="{{ model.name }}" required
+                 class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                 placeholder="Введите имя модели">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Описание <span class="text-red-500">*</span>
+          </label>
+          <textarea name="description" required rows="4"
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    placeholder="Подробное описание модели...">{{ model.description }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-ruble-sign mr-2 text-green-600"></i>
+          Ценообразование
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Установите цены за различные периоды</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Цена за час</label>
+          <div class="relative">
+            <input type="text" name="price_per_hour" value="{{ model.price_per_hour or '' }}"
+                   class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                   placeholder="0">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 text-sm">₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Цена за 4 часа</label>
+          <div class="relative">
+            <input type="text" name="price_per_foo" value="{{ model.price_per_foo or '' }}"
+                   class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                   placeholder="0">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 text-sm">₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Цена за ночь</label>
+          <div class="relative">
+            <input type="text" name="price_per_night" value="{{ model.price_per_night or '' }}"
+                   class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                   placeholder="0">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 text-sm">₽</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Physical Parameters -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-ruler mr-2 text-blue-600"></i>
+          Физические параметры
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Внешние характеристики модели</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Рост</label>
+          <div class="relative">
+            <input type="text" name="height" value="{{ model.height or '' }}"
+                   class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                   placeholder="170">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 text-sm">см</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Вес</label>
+          <div class="relative">
+            <input type="text" name="weight" value="{{ model.weight or '' }}"
+                   class="block w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                   placeholder="55">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <span class="text-gray-500 text-sm">кг</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Грудь</label>
+          <input type="text" name="boobs" value="{{ model.boobs or '' }}"
+                 class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                 placeholder="2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories and Status -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-tags mr-2 text-purple-600"></i>
+          Категории и статус
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Выберите категории и особенности модели</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <input type="checkbox" name="indi" id="indi" {% if model.indi %}checked{% endif %}
+                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="indi" class="ml-2 block text-sm text-gray-900">
+              <span class="font-medium">Индивидуальная</span>
+              <div class="text-xs text-gray-500">Эксклюзивные услуги</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <input type="checkbox" name="elit" id="elit" {% if model.elit %}checked{% endif %}
+                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="elit" class="ml-2 block text-sm text-gray-900">
+              <span class="font-medium">Элит</span>
+              <div class="text-xs text-gray-500">Премиум категория</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <input type="checkbox" name="new" id="new" {% if model.new %}checked{% endif %}
+                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="new" class="ml-2 block text-sm text-gray-900">
+              <span class="font-medium">Новая</span>
+              <div class="text-xs text-gray-500">Недавно добавлена</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-address-book mr-2 text-orange-600"></i>
+          Контактная информация
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Место встреч и контактные данные</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Место</label>
+          <input type="text" name="place" value="{{ model.place or '' }}"
+                 class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                 placeholder="Например: Москва, СПБ">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Номер телефона</label>
+          <input type="text" name="number" value="{{ model.number or '' }}"
+                 class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                 placeholder="+7 (XXX) XXX-XX-XX">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Услуги</label>
+          <div class="bg-gray-50 border border-gray-300 rounded-lg p-4 max-h-60 overflow-y-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {% for service in all_services %}
+              <div class="flex items-center p-2 hover:bg-white rounded-lg transition-colors">
+                <input type="checkbox"
+                       name="service_ids"
+                       value="{{ service.id }}"
+                       id="service_{{ service.id }}"
+                       {% if service in model.services %}checked{% endif %}
+                       class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                <label for="service_{{ service.id }}" class="ml-2 block text-sm text-gray-900 cursor-pointer flex-1">
+                  {{ service.name }}
+                </label>
+              </div>
+              {% endfor %}
+            </div>
+            {% if not all_services %}
+            <div class="text-center py-4">
+              <p class="text-gray-500 text-sm">Услуги не найдены</p>
+              <a href="/admin/services/create" class="text-indigo-600 hover:text-indigo-800 text-sm">Добавить первую услугу</a>
+            </div>
+            {% endif %}
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Выберите услуги, которые предоставляет модель</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Photos -->
+    {% if model.photos and model.photos|length > 0 %}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-images mr-2 text-pink-600"></i>
+          Текущие фотографии
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Существующие фотографии модели</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {% for photo in model.photos %}
+        <div class="relative group">
+          <img src="{{ photo.photo_url }}" alt="photo" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+          <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+            <button type="button" class="text-white hover:text-red-300 p-2" onclick="deletePhoto('{{ photo.id }}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Add New Photos -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div class="border-b border-gray-200 pb-4 mb-6">
+        <h3 class="text-lg font-medium text-gray-900">
+          <i class="fas fa-plus mr-2 text-pink-600"></i>
+          Добавить новые фотографии
+        </h3>
+        <p class="text-sm text-gray-500 mt-1">Загрузите дополнительные фотографии</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-500 transition-colors">
+          <div class="space-y-1 text-center">
+            <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl"></i>
+            <div class="flex text-sm text-gray-600">
+              <label for="files" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                <span>Загрузить файлы</span>
+                <input id="files" name="files" type="file" multiple accept="image/*" class="sr-only">
+              </label>
+              <p class="pl-1">или перетащите сюда</p>
+            </div>
+            <p class="text-xs text-gray-500">PNG, JPG, GIF до 10MB каждый</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex justify-between pt-6">
+      <div>
+        <button type="button" onclick="confirmDelete()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <i class="fas fa-trash mr-2"></i>
+          Удалить модель
+        </button>
+      </div>
+      <div class="flex space-x-4">
+        <a href="/admin/models" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+          Отмена
+        </a>
+        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+          <i class="fas fa-save mr-2"></i>
+          Обновить модель
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Hidden delete form -->
+<form id="deleteForm" method="post" action="/admin/models/delete/{{ model.uuid }}" style="display: none;">
+</form>
+
+<script>
+// Preview uploaded images
+document.getElementById('files').addEventListener('change', function(e) {
+  const files = e.target.files;
+  const container = e.target.closest('.space-y-4');
+
+  // Remove existing preview
+  const existingPreview = container.querySelector('.image-preview');
+  if (existingPreview) {
+    existingPreview.remove();
+  }
+
+  if (files.length > 0) {
+    const preview = document.createElement('div');
+    preview.className = 'image-preview grid grid-cols-2 md:grid-cols-4 gap-4 mt-4';
+
+    Array.from(files).slice(0, 8).forEach((file, index) => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'w-full h-24 object-cover rounded-lg border border-gray-200';
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'relative';
+          wrapper.appendChild(img);
+
+          preview.appendChild(wrapper);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    container.appendChild(preview);
+  }
+});
+
+// Confirm delete function
+function confirmDelete() {
+  if (confirm('Вы уверены, что хотите удалить эту модель? Это действие нельзя отменить.')) {
+    document.getElementById('deleteForm').submit();
+  }
+}
+
+// Delete photo function (placeholder)
+function deletePhoto(photoId) {
+  if (confirm('Удалить эту фотографию?')) {
+    // Here you would typically make an AJAX request to delete the photo
+    console.log('Deleting photo:', photoId);
+    // For now, just hide the photo element
+    event.target.closest('.relative').style.display = 'none';
+  }
+}
+</script>
+{% endblock %}

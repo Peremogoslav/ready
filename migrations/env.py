@@ -6,6 +6,7 @@ from alembic import context
 # Импорт Base с твоими моделями
 from src.core.base import Base
 from src.models.models import Models
+from src.managers.models import SiteManagers
 from src.models.models import Services
 from src.auth.models import  User
 from src.models.models import ModelPhoto

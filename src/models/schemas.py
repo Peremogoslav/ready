@@ -24,19 +24,22 @@ class PhotoBase(BaseModel):
 
 class ModelBase(BaseModel):
     name: str
+    age: int
     slug: Optional[str] = None
-    price_per_hour: Optional[str] = None
-    price_per_foo: Optional[str] = None
-    price_per_night: Optional[str] = None
+    price_per_hour: Optional[int] = None
+    price_per_foo: Optional[int] = None
+    price_per_night: Optional[int] = None
     new: Optional[bool] = None
     indi: Optional[bool] = None
     elit: Optional[bool] = None
-    height: Optional[str] = None
-    weight: Optional[str] = None
-    boobs: Optional[str] = None
+    height: Optional[int] = None
+    weight: Optional[int] = None
+    boobs: Optional[int] = None
     place: Optional[str] = None
     number: Optional[str] = None
     description: str
+    description_en: str
+    name_en: str
     photo_url: Optional[str] = None
 
 

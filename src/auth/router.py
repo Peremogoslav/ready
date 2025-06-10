@@ -16,7 +16,6 @@ from src.utils.tool import create_password_hash, verify_password, create_access_
     get_current_user
 
 router = APIRouter(tags=["Auth"], prefix='/api')
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.post("/register")
@@ -68,13 +67,3 @@ async def protected_route(current_user: str = Depends(get_current_superuser)):
 @router.get("/user_protected")
 async def get_me(current_user: str = Depends(get_current_user)):
     return {"Привет!": current_user.username}
-
-
-@router.get("/login")
-async def login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
-
-
-@router.get("/register")
-async def registration(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})

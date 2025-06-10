@@ -1,0 +1,48 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Контакты на сайте{% endblock %}
+
+{% block page_title %}Контакты на сайте{% endblock %}
+
+{% block content %}
+  <div class="overflow-x-auto">
+    {% if contacts %}
+      <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+        <thead class="bg-indigo-600 text-white">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Telegram</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">WhatsApp</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold">Телефон</th>
+            <th class="px-6 py-3 text-center text-sm font-semibold">Действия</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+{% for contact in contacts %}
+  <tr class="hover:bg-indigo-50">
+    <td class="px-6 py-4 text-sm text-gray-700">
+      <form action="/api/manager/edit/{{ contact.id }}" method="post">
+        <input type="text" name="global_telegram" value="{{ contact.global_telegram }}" class="border rounded px-2 py-1 w-full">
+    </td>
+    <td class="px-6 py-4 text-sm text-gray-700">
+        <input type="text" name="global_whatsapp" value="{{ contact.global_whatsapp }}" class="border rounded px-2 py-1 w-full">
+    </td>
+    <td class="px-6 py-4 text-sm text-gray-700">
+        <input type="text" name="global_number" value="{{ contact.global_number }}" class="border rounded px-2 py-1 w-full">
+    </td>
+    <td class="px-6 py-4 text-center">
+        <button type="submit" class="text-white bg-indigo-600 hover:bg-indigo-800 px-4 py-1 rounded">
+          Сохранить
+        </button>
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+
+
+        </tbody>
+      </table>
+    {% else %}
+      <p>Контакты не найдены.</p>
+    {% endif %}
+  </div>
+{% endblock %}

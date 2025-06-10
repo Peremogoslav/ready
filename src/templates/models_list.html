@@ -1,0 +1,232 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Список моделей{% endblock %}
+{% block page_title %}Управление моделями{% endblock %}
+
+{% block content %}
+<!-- Header with action buttons -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+  <div class="mb-4 sm:mb-0">
+    <p class="text-gray-600">Управляйте моделями и их информацией</p>
+  </div>
+  <div class="flex space-x-3">
+    <a href="/admin/models/create" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+      <i class="fas fa-plus mr-2"></i>
+      Добавить модель
+    </a>
+  </div>
+</div>
+
+<!-- Search and filters -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
+  <div class="p-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Search -->
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <input type="text" placeholder="Поиск моделей..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+
+      <!-- Category filter -->
+      <select class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+        <option value="">Все категории</option>
+        <option value="new">Новые</option>
+        <option value="elite">Элитные</option>
+        <option value="individual">Индивидуальные</option>
+      </select>
+
+      <!-- Status filter -->
+      <select class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+        <option value="">Все статусы</option>
+        <option value="active">Активные</option>
+        <option value="inactive">Неактивные</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Models table -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Модель
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Описание
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Категория
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Цены
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Статус
+          </th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Действия
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {% for model in models %}
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-12 w-12">
+                {% if model.photos and model.photos|length > 0 %}
+                  <img class="h-12 w-12 rounded-lg object-cover" src="{{ model.photos[0].photo_url }}" alt="{{ model.name }}">
+                {% else %}
+                  <div class="h-12 w-12 rounded-lg bg-gray-300 flex items-center justify-center">
+                    <i class="fas fa-user text-gray-500"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="ml-4">
+                <div class="text-sm font-medium text-gray-900">{{ model.name }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm text-gray-900">{{ model.description[:50] }}{% if model.description|length > 50 %}...{% endif %}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex flex-wrap gap-1">
+              {% if model.new %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  <i class="fas fa-star mr-1"></i>Новая
+                </span>
+              {% endif %}
+              {% if model.elit %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                  <i class="fas fa-crown mr-1"></i>Элит
+                </span>
+              {% endif %}
+              {% if model.indi %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <i class="fas fa-user mr-1"></i>Индивидуальная
+                </span>
+              {% endif %}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            <div class="space-y-1">
+              {% if model.price_per_hour %}
+                <div>Час: <span class="font-medium">{{ model.price_per_hour }}₽</span></div>
+              {% endif %}
+              {% if model.price_per_foo %}
+                <div>Ночь: <span class="font-medium">{{ model.price_per_foo }}₽</span></div>
+              {% endif %}
+              {% if model.price_per_night %}
+                <div>Ночь: <span class="font-medium">{{ model.price_per_night }}₽</span></div>
+              {% endif %}
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <div class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></div>
+              Активна
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <div class="flex items-center justify-end space-x-2">
+              <a href="/admin/models/edit/{{ model.uuid }}" class="inline-flex items-center p-1.5 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded transition-colors">
+                <i class="fas fa-edit w-4 h-4"></i>
+              </a>
+              <!-- Кнопка удаления через JS -->
+              <button
+                data-id="{{ model.uuid }}"
+                class="delete-model-btn inline-flex items-center p-1.5 text-red-600 hover:text-red-900 hover:bg-red-50 rounded transition-colors"
+                title="Удалить модель">
+                <i class="fas fa-trash w-4 h-4"></i>
+              </button>
+
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if not models %}
+  <div class="text-center py-12">
+    <div class="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+      <i class="fas fa-users text-gray-400 text-3xl"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">Моделей пока нет</h3>
+    <p class="text-gray-500 mb-6">Начните с создания первой модели</p>
+    <a href="/admin/models/create" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+      <i class="fas fa-plus mr-2"></i>
+      Добавить модель
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+function toggleDropdown(id) {
+  const dropdown = document.getElementById(id);
+  const allDropdowns = document.querySelectorAll('[id^="dropdown-"]');
+
+  // Закрыть все остальные dropdown
+  allDropdowns.forEach(d => {
+    if (d.id !== id) {
+      d.classList.add('hidden');
+    }
+  });
+
+  // Переключить текущий dropdown
+  dropdown.classList.toggle('hidden');
+}
+
+// Закрыть dropdown при клике вне его
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('[onclick^="toggleDropdown"]') && !e.target.closest('[id^="dropdown-"]')) {
+    document.querySelectorAll('[id^="dropdown-"]').forEach(d => {
+      d.classList.add('hidden');
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const deleteButtons = document.querySelectorAll('.delete-model-btn');
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const modelId = button.getAttribute('data-id');
+
+      if (!confirm('Вы уверены, что хотите удалить эту модель?')) return;
+
+      try {
+        const response = await fetch(`/api/models/delete/${modelId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            // Если ваш API требует авторизации, добавьте здесь заголовок, например:
+            // 'Authorization': 'Bearer YOUR_TOKEN_HERE'
+          }
+        });
+
+        if (response.ok) {
+          // Удаляем строку таблицы с моделью
+          const row = button.closest('tr');
+          if (row) row.remove();
+          alert('Модель успешно удалена');
+        } else {
+          const data = await response.json();
+          alert(`Ошибка при удалении: ${data.detail || response.statusText}`);
+        }
+      } catch (error) {
+        alert('Ошибка сети: ' + error.message);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

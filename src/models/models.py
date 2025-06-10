@@ -41,6 +41,7 @@ class Models(Base):
     boobs: Mapped[int] = mapped_column(Integer, nullable=True)
     place: Mapped[str] = mapped_column(String, nullable=True)
     number: Mapped[str] = mapped_column(String, nullable=True)
+    place_en: Mapped[str] = mapped_column(Text, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     name_en: Mapped[str] = mapped_column(String(100), nullable=False)
     description_en: Mapped[str] = mapped_column(Text, nullable=False)

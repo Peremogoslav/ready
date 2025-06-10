@@ -39,6 +39,7 @@ class ModelBase(BaseModel):
     number: Optional[str] = None
     description: str
     description_en: str
+    place_en: str
     name_en: str
     photo_url: Optional[str] = None
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import MainLayout from "../components/layouts/MainLayout";
 import styles from "../styles/Home.module.css";
+import type { GetStaticProps } from 'next';
+
 type Photo = {
   photo_url: string;
 };

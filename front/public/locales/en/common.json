@@ -1,0 +1,157 @@
+{
+  "header": {
+    "logo": "Moscow Dolls",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "navigation": {
+      "allModels": "All Models",
+      "eliteModels": "Elite",
+      "newModels": "New",
+      "indiModels": "Independents",
+      "escortWork": "Escort Work",
+      "contacts": "Contacts",
+      "about": "About Us"
+    }
+  },
+  "pages":{
+    "nextPage": "Next page",
+    "previousPage": "Previous page"
+  },
+    "modelsPage": {
+    "title": "All escort models from Moscow — Page {{page}}",
+    "description": "Browse escort models and companionship services in Moscow. Page {{page}} of {{totalPages}}."
+  },
+  "homepage": {
+    "title": "Best escort models in Moscow — verified profiles, photos, prices",
+    "description": "Intimacy Moscow — actual profiles with photos, prices, reviews and services. Premium leisure 24/7.",
+    "loadMore": "Show all models",
+    "loading": "Loading...",
+    "noMoreModels": "No more models",
+    "modelDescription": "Escort model from {{place}}, breast size {{boobs}}, price from {{price}}",
+    "modelDescriptionDefaults": {
+      "place": "not specified",
+      "boobs": "not specified",
+      "price": "on request"
+    }
+  },
+  "common": {
+    "language": "Language",
+    "errorLoading": "Loading error"
+  },
+  "layout": {
+    "escortServices": "Escort Services",
+    "servicesLoading": "Loading services...",
+    "servicesError": "Services loading error: {{error}}",
+    "servicesNotFound": "Services not found",
+    "footer": {
+      "navigation": "Navigation",
+      "home": "Home",
+      "about": "About Us",
+      "services": "Services",
+      "contacts": "Contacts",
+      "contactsTitle": "Contacts",
+      "phone": "Phone",
+      "socialMedia": "Social Media",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "writeMessage": "Write",
+      "copyright": "© {{year}} Website. All rights reserved."
+    }
+  },
+  "modelPage": {
+    "loading": "Loading...",
+    "notFound": "Model not found",
+    "back": "← Back",
+    "photos": "Photos",
+    "writeToTelegram": "Write to Telegram",
+    "writeToWhatsApp": "Write to WhatsApp",
+    "pricePerHour": "Price per hour",
+    "pricePer4Hours": "Price for 4 hours",
+    "pricePerNight": "Price per night",
+    "contact": "Contact",
+    "size": "Size",
+    "aboutSelf": "About",
+    "services": "Services",
+    "otherModels": "Other models",
+    "noOtherModels": "No other models",
+    "onRequest": "on request",
+    "escortModel": "escort model",
+    "from": "from",
+    "perHour": "per hour",
+    "breastSize": "breast size",
+    "servicesPrefix": "Services -",
+    "cityPrepositions": {
+      "Москва": "in Moscow",
+      "Санкт-Петербург": "in St. Petersburg",
+      "Казань": "in Kazan",
+      "Новосибирск": "in Novosibirsk",
+      "Екатеринбург": "in Yekaterinburg",
+      "Сочи": "in Sochi",
+      "Краснодар": "in Krasnodar",
+      "Уфа": "in Ufa",
+      "Омск": "in Omsk"
+    }
+  },
+  "modelGrid": {
+        "price_per_hour": "Price per hour:",
+        "model_name": "{{model.name_en}}"
+    },
+  "loading": "Loading...",
+  "escortService": "Escort service",
+  "inMoscow": "in Moscow",
+  "modelsOfferingService": "Models offering the service \"{{serviceName}}\" {{city}} — real photos, prices and detailed profiles for your choice.",
+  "discoverBestModels": "Discover the best models specializing in the service \"{{serviceName}}\". Verified profiles and up-to-date prices.",
+  "serviceWideChoice": "The service \"{{serviceName}}\" {{city}}: a wide selection of models with individual offers, photos, and reviews.",
+  "about": {
+    "title": "About Us — Trusted Escort Models Directory in Moscow",
+    "description": "Meet our team and learn how we create a safe, convenient, and transparent escort model directory in Moscow to ensure your comfort and confidence.",
+    "heading": "About Us",
+    "whoWeAre": {
+      "p1": "We are a team of professionals dedicated to creating the most reliable and user-friendly escort model directory in Moscow. Our mission is to ensure safety, comfort, and transparency for both clients and models by offering only verified profiles and up-to-date information.",
+      "p2": "Each model is carefully selected so you can be confident in the quality and reliability of our service. Our catalog is continuously updated, so you can always find exactly what you're looking for."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "p1": "We strive to create a space where every user—client or model—feels safe and comfortable. We value openness, honesty, and mutual respect in every interaction.",
+      "p2": "Our project helps models gain the recognition and support they deserve, while clients can find exactly the company that meets their expectations."
+    },
+    "whyUs": {
+      "title": "Why Choose Us",
+      "points": [
+        "Thorough verification of every model and profile.",
+        "Transparent terms and up-to-date pricing.",
+        "User-friendly and modern catalog interface.",
+        "Support and security for all users.",
+        "Continuous updates and expanding model database."
+      ]
+    },
+    "contact": {
+      "title": "Contact Information",
+      "text": "If you have any questions or suggestions, we are always open to feedback. Contact us by email at {{email}} or through the feedback form on the website."
+    }
+  },
+  "contacts": {
+    "title": "Contacts — Get in Touch",
+    "description": "Contact information for site administration: support, cooperation, and feedback.",
+    "heading": "Contacts",
+    "intro": "If you have any questions, suggestions, or want to cooperate, feel free to reach out to us in any convenient way:",
+    "mapTitle": "We on the map",
+    "mapFrameTitle": "Office location map"
+  },
+  "indi": {
+    "title": "Indie Models in Moscow — Elite Escort with a Personal Approach",
+    "description": "Exclusive indie models in Moscow — verified profiles with photos, detailed descriptions, and personal pricing. High-class private service for discerning clients.",
+    "loading": "Loading services..."
+  },
+  "newModels": {
+    "title": "New Escort Models in Moscow — Fresh Profiles and Unique Offers",
+    "description": "Discover new faces in Moscow — fresh escort model profiles with real photos, up-to-date prices, and detailed service descriptions. Perfect for those looking for something new and exclusive.",
+    "loading": "Loading services..."
+  },
+  "indiModels": {
+    "title": "Elite Models of Moscow — elite escort with an individual approach",
+    "description": "Exclusive elite models of Moscow — verified profiles with photos, detailed descriptions, and individual prices. High-class private service for discerning clients.",
+    "loadingServices": "Loading services...",
+    "errorLoadingModels": "Error loading models:"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "title": "Job Application | Escort Agency",
+    "description": "Apply for a job in our escort agency. We offer competitive rates and flexible working conditions."
+  },
+  "header": "Job Application",
+  "description": "Fill out the form below to apply for a job in our agency. We will contact you shortly.",
+  "form": {
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "age": "Age",
+    "city": "City",
+    "telegram": "Telegram",
+    "instagram": "Instagram"
+  },
+  "placeholders": {
+    "name": "Enter your full name",
+    "phone": "Enter your phone number",
+    "age": "Enter your age",
+    "city": "Enter your city",
+    "telegram": "@username",
+    "instagram": "@username"
+  },
+  "submit": "Submit Application",
+  "successMessage": "Thank you! Your application has been submitted. We will contact you soon.",
+  "errors": {
+    "telegramSend": "Failed to send the application. Please try again later."
+  }
+}
